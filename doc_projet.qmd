@@ -11,11 +11,11 @@ The presentation is organized into five parts:
     - *Tools* : [pandas](https://pandas.pydata.org/docs/user_guide/index.html) / [polars](https://docs.pola.rs/)
 - 3. **Training a ML model to predict housing prices** : 
     - *Tools*:
-        - [**Scikit-learn**](https://scikit-learn.org/stable/user_guide.html) Python framwork for the training 
-        - [Insee working document](https://inseefrlab.github.io/DT_methodes_ensemblistes/) on bagging ans boosting methods 
+        - [**Scikit-learn**](https://scikit-learn.org/stable/user_guide.html) Python framework for training 
+        - [Insee working document](https://inseefrlab.github.io/DT_methodes_ensemblistes/) on bagging and boosting methods 
         - python package crospint
-    - *Goal* : 
-        - create both training and test set
+    - *Goals* : 
+        - create both training and test sets
         - train ML model (bagging / boosting) with [scikit-learn](https://scikit-learn.org/stable/modules/ensemble.html#)
         - train ML model with **crospint**
         - evaluate model with metrics (see Olivier methods - OOB error)
