@@ -74,7 +74,7 @@ The aim of this part is to manipulate new database and understand features in or
     )
     ```
 
-2.  **Load, with DuckDB, all data inputs in a DataFrame `trans`** **(for transactions).**
+2.  **Load, with DuckDB, all data inputs in a DataFrame `trans`**(for transactions).**
 
 ```{python}
 #| code-fold: true
@@ -532,7 +532,7 @@ rf_pipeline = Pipeline([
 
 When you create a pipeline, the first step is to prepare your data. The object `ColumnTransformer` can perform that : it allows you to apply different transformations to different columns of your dataset. It takes a list of `(name, transformer, columns)` tuples as input and outputs a single array with all transformed columns concatenated together.
 
-However, **`ColumnTransformer`** **delete all features which are not named inside the object**.
+However, **`ColumnTransformer` delete all features which are not named inside the object**.
 
 You can also check on scikit-learn documentation for the [`make_column_selector` function](https://scikit-learn.org/stable/modules/generated/sklearn.compose.make_column_selector.html). Instead of writing down all the categorical variables, you can use it to automatically detect categorical columns based on their data types.  
 
@@ -585,8 +585,8 @@ We will now create our first pipeline to transform the data for the training pha
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder, FunctionTransformer
 
-# Selection of numerical columns as the one with dtypes int32
-numeric_cols = X.select_dtypes(include="number").columns.to_list()
+# Selection of integer columns
+numeric_cols = X.select_dtypes(include="integer").columns.to_list()
 
 def date_to_days(X: pd.Series, ref_date:pd.Timestamp):
     # converts a date to a difference to ref_date : 
