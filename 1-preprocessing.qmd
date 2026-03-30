@@ -577,8 +577,6 @@ We will now create our first pipeline to transform the data for the training pha
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder, FunctionTransformer
 
-# Selection of integer columns
-numeric_cols = X.select_dtypes(include="integer").columns.to_list()
 
 def date_to_days(X: pd.Series, ref_date:pd.Timestamp):
     # converts a date to a difference to ref_date : 
