@@ -169,8 +169,12 @@ In the real world, we would do this step with the pipeline defined at the end of
 #| eval: false
 
 # Sample the train dataset using Pandas' index
-X_sub = X_train.sample(frac=0.1, axis=0, random_state= RANDOM_STATE) 
-y_sub = y_train[X_sub.index] 
+y_train_df = pd.DataFrame(y_train)
+y_train_df["quantile"] = pd.qcut(y_train_df["valfonc_m2"], q=100, labels=False) ## allows to discretly cut along quantiles
+y_sub = y_train_df.groupby("quantile").sample(frac=0.1, random_state= RANDOM_STATE)  # sampling by quantile 
+
+y_sub = y_sub["valfonc_m2"] # converting to pandas.series
+X_sub = X_train.filter(items=y_sub.index, axis=0 )  # sampling X_train
 
 ```
 
@@ -292,10 +296,13 @@ def rf_error_oob_plot(X_train,
         metric : 'r2',  'rmse' or 'mae'
     """
 
-# --- Sampling training set ---
+# --- Stratified sampling of training set ---
+    y_train_df = pd.DataFrame(y_train)
+    y_train_df["quantile"] = pd.qcut(y_train_df["valfonc_m2"], q=100, labels=False) ## allows to discretly cut along quantiles
+    y_sub = y_train_df.groupby("quantile").sample(frac=0.1, random_state= RANDOM_STATE)  # sampling by quantile 
 
-    X_sub = X_train.sample(frac=0.1, axis=0, random_state= RANDOM_STATE) 
-    y_sub = y_train[X_sub.index] 
+    y_sub = y_sub["valfonc_m2"] # converting to pandas.series
+    X_sub = X_train.filter(items=y_sub.index, axis=0 )  # sampling X_train
 
     # --- 
     rf = RandomForestRegressor(
