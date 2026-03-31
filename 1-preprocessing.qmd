@@ -603,7 +603,7 @@ preprocessor = ColumnTransformer(
 ) 
 ```
 
-2.  Create the Pipeline for training a RandomForestRegressor model.
+2.  Create the Pipeline for training a RandomForestRegressor model. Go to the [scikit-learn's documentation](https://scikit-learn.org/stable/modules/compose.html#) on the matter to understand how it works. 
 
     <details>
 
@@ -667,3 +667,13 @@ model = TransformedTargetRegressor(
 :::
 
 Congrats ! You have completed the data preparation exercises. Now you can choose one of the two model you'll want to train - or do both ! 💪
+
+::: {.callout-tip}
+Scikit-learn allows you to access every step defined in the `rf_pipeline` (preprocessing or random_forests). Indeed, once fitted, all the output values are stored in the dictionnary `rf_pipeline`. 
+
+```python
+rf_pipeline["preprocessing"]   # access to the first step
+rf_pipeline["random_forests"]   # access to the second step
+```
+
+:::
