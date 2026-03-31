@@ -603,7 +603,7 @@ preprocessor = ColumnTransformer(
 ) 
 ```
 
-2.  Create the Pipeline for training a RandomForestRegressor model. Go to the [scikit-learn's documentation](https://scikit-learn.org/stable/modules/compose.html#) on the matter to understand how it works. 
+2.  Create the Pipeline for training a RandomForestRegressor model. Go to the [scikit-learn's documentation](https://scikit-learn.org/stable/modules/compose.html#pipelines-and-composite-estimators) on the matter to understand how it works. 
 
     <details>
 
