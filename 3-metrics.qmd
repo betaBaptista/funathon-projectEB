@@ -11,9 +11,9 @@ Training a model is only half the work. Before drawing any conclusions or deploy
 
 Before evaluating our trained models, you will discover some metrics and plots to measure the quality of the predictions.
 
-# I - How can you evaluate the model's inference ?
+# How can you evaluate the model's inference ?
 
-## A - Regression metrics
+## Regression metrics
 
 Regression metrics assess the quality of a model's predictions by comparing predicted and "observed" values. Each metric offers a different perspective depending on whether the goal is : 
 - to penalize extreme error ;
@@ -53,7 +53,7 @@ R² measures the proportion of variance in the target that is explained by the m
 
 Unlike RMSE and MAE, R² allows comparison across different datasets and targets. Its main limitation is that it can be inflated by adding features, even irrelevant ones.
 
-## B - Diagnostic plots
+## Diagnostic plots
 
 Scalar metrics alone are insufficient: two models can share the same RMSE while exhibiting very different error patterns. Diagnostic plots reveal the structure of residuals and provide insights that numbers cannot. Moreover, they add details to see if the model performs well where you want it to perform. For example, if your aim is to have good results on the center of the distribution, you can live with worse results on extreme values (or the opposite). 
 
@@ -95,10 +95,9 @@ Permutation importance has several advantages over the default impurity-based im
 Features with near-zero or negative permutation importance can safely be removed without hurting predictive performance. A high importance score validates that a feature carries genuine predictive signal.
 
 
-# 2 - Computing evaluation metrics
+# Computing evaluation metrics
 
-::: callout-tip
-## <i class="bi bi-book"></i> Exercice 10: Compute evaluation metrics
+## Exercice 10: Compute evaluation metrics
 
 In this exercise, you will generate predictions from the best RF and GB model and compute all four evaluation metrics on the test set.
 
@@ -139,7 +138,7 @@ GB_residuals = y_test - y_pred_GB
 
 2.  Compute RMSE, MAE and R² using scikit-learn's metrics module for the comparison of RF and GB models.
 
-::: {.callout-tip collapse="true" title="Click to view a hint"}
+::: {.callout-tip collapse="true" title="Hint"}
 
 Import `root_mean_squared_error`, `mean_absolute_error` and `r2_score` from `sklearn.metrics`. You can see the documentation of `sklearn.metrics` [here](https://scikit-learn.org/stable/api/sklearn.metrics.html).
 
@@ -175,7 +174,7 @@ for name, model in models:
 
 3.  (Optional) Compute the MAPE to express the average prediction error as a percentage of the actual price.
 
-::: {.callout-tip collapse="true" title="Click to view a hint"}
+::: {.callout-tip collapse="true" title="Hint"}
 
 Use `mean_absolute_percentage_error` from `sklearn.metrics`. Make sure y_test contains no zero values before dividing. You can see the documentation [here](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_percentage_error.html).
 
@@ -194,16 +193,15 @@ mape_pct_gb = mean_absolute_percentage_error(y_test, y_pred_GB) * 100
 print(f"MAPE RF: {mape_pct_rf:.2f} %")
 print(f"MAPE GB: {mape_pct_gb:.2f} %")
 ```
-:::
 
-::: callout-tip
-## <i class="bi bi-book"></i> Exercice 11: Generate diagnostic plots
+
+## Exercice 11: Generate diagnostic plots
 
 In this exercise, you will produce four diagnostic plots: a residuals distribution, a QQ-plot comparing actual and predicted quantiles, the target distribution and a feature importance plot. For each plot, take a moment to interpret what you observe.
 
 1.  Write a `residuals_distribution(residuals, rmse)` function to plot the histogram of the residuals. It takes `residuals` (a pandas Series) and `rmse` (a float), along with `ax`, `label` and `color` parameters for overlay plotting. 
 
-::: {.callout-tip collapse="true" title="Click to view a hint"}
+::: {.callout-tip collapse="true" title="Hint"}
 
 Use `matplotlib.pyplot` module to plot the distribution. You can read the documentation [here](https://matplotlib.org/stable/tutorials/pyplot.html).
 
@@ -230,7 +228,7 @@ def residuals_distribution(residuals: pd.Series, rmse: float, ax=None, label=Non
 
 2.  Plot the residuals distribution of the RF and GB models. Look at whether the histogram is centered around zero and whether it is approximately symmetric.
 
-::: {.callout-tip collapse="true" title="Click to view a hint"}
+::: {.callout-tip collapse="true" title="Hint"}
 
 Pass the residuals series and the RMSE value computed in Exercise 8. The RMSE value is needed in the plot title. Call `plt.show()` to display the figure.
 
@@ -283,7 +281,7 @@ def QQplot(y_test: pd.Series, y_pred: pd.Series, ax=None, label=None, color=None
 
 4.  Plot the QQ plot comparing the quantiles of the actual and predicted distributions for RF and GB models. Check whether the points align closely along the diagonal, especially in the tails.
 
-::: {.callout-tip collapse="true" title="Click to view a hint"}
+::: {.callout-tip collapse="true" title="Hint"}
 
 Points well above the diagonal in the upper tail indicate that the model underestimates high prices.
 
@@ -326,7 +324,7 @@ def target_distribution(y: pd.Series):
 
 6.  Plot and compare the target distributions for the actual test values and the predicted values side by side.
 
-::: {.callout-tip collapse="true" title="Click to view a hint"}
+::: {.callout-tip collapse="true" title="Hint"}
 
 Call it twice — once for `y_test` and once for `y_pred`. Display both figures. Compare the shapes: a compressed predicted distribution indicates regression to the mean, while a systematic vertical shift indicates a constant bias.
 
@@ -390,7 +388,7 @@ plt.show()
 
 > Note: Permutation importance is computationally expensive on a large test set. The `calculate_importance()` function automatically subsamples up to 100,000 observations before computing importance scores. This subsample does not change the result.
 
-::: {.callout-tip collapse="true" title="Click to view a hint"}
+::: {.callout-tip collapse="true" title="Hint"}
 
 Use `permutation_importance` function from scikit-learn. See [here](https://scikit-learn.org/stable/modules/generated/sklearn.inspection.permutation_importance.html) for the documentation.
 
@@ -448,7 +446,7 @@ def importance_plot(importances):
 
 9.  Compute the permutation importance and plot the top 20 most important features.
 
-::: {.callout-tip collapse="true" title="Click to view a hint"}
+::: {.callout-tip collapse="true" title="Hint"}
 
 Calculate the importance with the train set and the final RF model. The `SCORING` argument should match the metric used during training (e.g. `"r2"`).
 
@@ -469,4 +467,3 @@ plt.show()
 ```
 
 Congrats 🎉! You now have a complete evaluation pipeline: scalar metrics, residual diagnostics, distributional analysis, feature importance and a head-to-head model comparison. These steps form the foundation of any rigorous model validation workflow.
-:::

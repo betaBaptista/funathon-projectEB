@@ -13,7 +13,7 @@ In the first part of this project, we prepared the data to train the model. We r
 
 An Insee working document on ensemble methods is available [here](https://inseefrlab.github.io/DT_methodes_ensemblistes/chapters/chapter2/3-random_forest.html). If you are unfamiliar with ensemble methods, we recommend reading this document before processing.
 
-## Concepts of Random Forests
+# Concepts of Random Forests
 
 **RF** extend [bagging](https://inseefrlab.github.io/DT_methodes_ensemblistes/chapters/chapter2/2-bagging.html) by introducing an additional level of randomness: at each node, the splitting rule is determined using only a **randomly selected subset of features**. This further **reduces correlation between trees**, thereby **lowering the variance of the aggregated model's predictions**.
 
@@ -28,8 +28,7 @@ So, RF rely on four key elements : building **aggregated regression or classific
 
 For more information, you can read the paragraph on RF hyperparameters [here](https://inseefrlab.github.io/DT_methodes_ensemblistes/chapters/chapter3/2-guide_usage_RF.html#sec-hyperparam-rf)
 
-:::: {.callout-tip collapse="false" icon="false"}
-## <i class="bi bi-book"></i> Exercice 4: Train your first Random Forest model
+# Exercice 4: Train your first Random Forest model
 
 1.  Using the `RandomForestRegressor` class and its [scikit-learn documentation page](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html), define a basic model with the following hyperparameters :
 
@@ -47,13 +46,11 @@ For more information, you can read the paragraph on RF hyperparameters [here](ht
 
     > **Note: All parameters of RandomForestRegressor have a default value - you only need to explicitly pass the ones you wish to override.**
 
-    <details>
-
-    <summary>Click to view a hint</summary>
+    ::: {.callout-tip collapse="true" title="Hint"}
 
     Remember : in the [Preprocessing section](1-preprocessing.qmd), we created the training sets `X_train` and `y_train`.
 
-    </details>
+    :::
 
 ```{python}
 #| code-fold: true
@@ -102,15 +99,13 @@ rf.oob_score_
 
     > Note : This is just an illustration of the evaluation process. More details on metrics will be covered in the [dedicated section](3-metrics.qmd).
 
-    <details>
-
-    <summary>Click to view a hint</summary>
+    ::: {.callout-tip collapse="true" title="Hint"}
 
     You can use the `mean_squared_error` function from the `sklearn.metrics` module.
 
     Remember to use the test set for the evaluation, not the training set.
 
-    </details>
+    :::
 
 ```{python}
 #| code-fold: true
@@ -128,10 +123,9 @@ print(mean_squared_error(y_test, y_pred))
 ```
 
 Congrats 🥳! You have trained your first RF model. Now, try to find the best hyperparameters to minimize the final predicted error of the model.
-::::
 
-:::::: {.callout-tip collapse="false" icon="false"}
-## <i class="bi bi-book"></i> Exercice 5: Tuning a random forest's hyperparameters
+
+# Exercice 5: Tuning a random forest's hyperparameters
 
 Now that you understand what a random forest is, we will tune its hyperparameters for training. In this exercise, your aim is to train the best model for the prediction of price per square meter.
 
@@ -173,7 +167,7 @@ X_sub = X_train.filter(items=y_sub.index, axis=0 )  # sampling X_train
 
 2.  Train multiple RF models with varying numbers of trees, using `warm_start=True` to avoid retraining all trees from scratch at each iteration. Keep the OOB error calculated in a list.
 
-    ::: {.callout-tip collapse="true" title="Click to view a hint"}
+    ::: {.callout-tip collapse="true" title="Hint"}
     As a hint, you can go to the documentation page on OOB error [here](https://scikit-learn.org/stable/auto_examples/ensemble/plot_ensemble_oob.html).
 
     If you need, here is the code to calculate and store the OOB score.
@@ -233,9 +227,7 @@ warnings.resetwarnings()
 
 3.  (*Optional*) Using the *Out-of-Bag (OOB) error*, try to plot the convergence of the OOB error as a function of the number of trees.
 
-    <details>
-
-    <summary>Click to view a hint</summary>
+    ::: {.callout-tip collapse="true" title="Hint"}
 
     You need to :
 
@@ -244,7 +236,7 @@ warnings.resetwarnings()
     -   select which metric you use to calculate OOB error estimator
     -   plot the convergence of OOB error as a function of number of trees
 
-    </details>
+    :::
 
 ```{python}
 #| code-fold: true
@@ -368,9 +360,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 1.  Create a dictionary with the 3 hyperparameters to test (`n_estimators`, `max_features` and `min_samples_leaf`) for training.
 
-    <details>
-
-    <summary>Click to view a hint</summary>
+    ::: {.callout-tip collapse="true" title="Hint"}
 
     Pay attention to hyperparameter names : when using `Pipeline` and `TransformedTargetRegressor` objects, theses names are more complex than plain `RandomForestRegressor` parameters names. In the previous section, we used two objects for training :
 
@@ -380,7 +370,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
     More details on [scikit learn's documentation](https://scikit-learn.org/stable/modules/compose.html#access-to-nested-parameters)
 
-    </details>
+    :::
 
 ```{python}
 #| code-fold: true
@@ -455,8 +445,7 @@ rf_best.fit(X_train, y_train)
 
 Congrats ! You have optimized your RF model. Now, you need to evaluate its accuracy — that is, how close the model's predictions are to the actual values..
 
-::: {.callout-tip collapse="false"}
-## <i class="bi bi-book"></i> Exercice 6: Model evaluation
+# Exercice 6: Model evaluation
 
 Now that your model has been optimized, it is time to rigorously evaluate its performance on the test set — data the model has never seen during training. This step is essential to assess how well your model generalizes to new observations.
 
@@ -479,13 +468,11 @@ y_pred = rf_best.predict(X_test)
 
 2.  Calculate the three evaluation metrics on the test set.
 
-<details>
-
-<summary>Click to view a hint</summary>
+::: {.callout-tip collapse="true" title="Hint"}
 
 You can use `mean_squared_error`, `mean_absolute_error`, and `r2_score` from `sklearn.metrics`. To obtain **RMSE** from **MSE**, apply `np.sqrt()`.
 
-</details>
+:::
 
 ```{python}
 #| code-fold: true
@@ -506,13 +493,11 @@ print(f"R²   : {r2:.4f}")
 
 3.  (Optional) Plot predicted values against actual values to visually assess model quality. A well-calibrated model should have points closely aligned along the diagonal.
 
-<details>
-
-<summary>Click to view a hint</summary>
+::: {.callout-tip collapse="true" title="Hint"}
 
 Use `matplotlib.pyplot` to create a scatter plot of `y_test` against `y_pred`. Add a reference diagonal line (representing perfect predictions) using `ax.plot([min, max], [min, max])`.
 
-</details>
+:::
 
 ```{python}
 #| code-fold: true
@@ -536,5 +521,4 @@ plt.show()
 ```
 
 Congrats 🎉! You have successfully trained, optimized, and evaluated a Random Forest model for price per square meter prediction.
-:::
-::::::
+
