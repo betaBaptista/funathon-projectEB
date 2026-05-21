@@ -34,11 +34,11 @@ The aim of this part is to manipulate new database and understand features in or
 
 To do so, you need to import the `duckdb` library and then open an in-memory connection.
 
-    ::: {.callout-tip collapse="true" title="Hint"}
+::: {.callout-tip collapse="true" title="Hint"}
 
-    You can have a look at the [official `duckdb` documentation](https://duckdb.org/docs/current/clients/python/overview#using-an-in-memory-database).
+You can have a look at the [official `duckdb` documentation](https://duckdb.org/docs/current/clients/python/overview#using-an-in-memory-database).
 
-    :::
+:::
 
     ```{python}
     #| code-fold: true
@@ -158,8 +158,8 @@ We will transform a few features for the training part. It will enhance the qual
 
     The reason why extreme values are detrimental to model quality differs depending on the model used :
 
-    -   For Random Forest (random forests), the final prediction is the mean value of Y across all observations contained in the leaf. Since the mean is not a robust statistic, extreme values can strongly influence the final prediction associated with that leaf.
-    -   For Gradient Boosting (gradient boosting), extreme values can lead to overfitting. Since gradient boosting iteratively reduces residuals by adding new trees, observations with very large residuals - often caused by extreme values - can have a disproportionate influence on the model.
+    -   For random forests, the final prediction is the mean value of Y across all observations contained in the leaf. Since the mean is not a robust statistic, extreme values can strongly influence the final prediction associated with that leaf.
+    -   For gradient boosting, extreme values can lead to overfitting. Since gradient boosting iteratively reduces residuals by adding new trees, observations with very large residuals - often caused by extreme values - can have a disproportionate influence on the model.
 :::
 
     The best way to look at the distribution of the target is to plot it. So: plot the price per square meter and the logarithm of price per square meter. If you want, you can remove extreme values before plotting. Look at the plots, and answer this question: what distribution looks closer to the normal one? Is it necessary to transform `y`?
@@ -211,7 +211,7 @@ You can use `matplotlib` to make the plots, and the `percentile` function of `nu
 
     We will therefore apply first a simple deterministic method. For example, we can set a threshold when analyzing housing price distribution (see previous plots and the describe methode). If the price per square meter of the transaction exceeds €200.000 for example, the value can be considered erroneous.
 
-    In the same way, we can have a look at the lower dristribution to see if there is an issue with the left part of the distribution.
+    In the same way, **have a look at the lower dristribution to see if there is an issue with low price per square meter**. To do so, plot the distribution of the target y for y below 2000€ per square meter and below 500 € per sqm. 
 
 ```{python}
 
@@ -234,6 +234,8 @@ We will set a price ceiling of 100€ to micmic original issue, even if with the
 
 The second step is to apply some statistic methods.
 For example, we can use the **Interquartile Range (IQR)** *to remove outlier target values*.
+
+**Drop observations where the target values is above 200 000 € per square meter or below 100 € per sqm. Drop also all observations where the target value is not in the interquartile range.**
 
 ::: {.callout-tip collapse="true" title="Hint"}
 
@@ -289,7 +291,7 @@ print(f'Applying these filters methods has dropped about {((n0 - n1)/n0)*100:.2f
 
 The target variable should not contain missing values when using machine learning algorithms. They should therefore be either dropped or imputed if you have reliable information to support the imputation.
 
-For our project, we will delete all observations with a missing target value. You can see [pandas documentation](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html#pandas.DataFrame.dropna) for help.
+For our project, **delete all observations with a missing target value**. You can see [pandas documentation](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html#pandas.DataFrame.dropna) for help.
 
 ```{python}
 #| code-fold: true
@@ -345,7 +347,7 @@ You will see in the section {#sec-scikit-learn-pipeline} how preprocessing can b
 
 ### Now let's go : prepare the dataframe for the training
 
-1.  Have a look at the list of variables available. Which ones do not bear any additionnal information and can be dropped ?
+1.  Have a look at the list of variables available (called features in machine learning). **Which feature do not bear any additionnal information and can be dropped ?**
 
     ::: {.callout-tip collapse="true" title="Hint"}
 
@@ -364,7 +366,7 @@ df = trans.drop(columns=[
 
 ```
 
-2.  For convenience, filter the rows containing at least one missing value. You can check pandas's `dropna` function on [their documentation](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.dropna.html#pandas.DataFrame.dropna). Check before filtering the number of rows concerned.
+2.  For convenience, **filter the rows containing at least one missing value**. You can check pandas's `dropna` function on [their documentation](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.dropna.html#pandas.DataFrame.dropna). Check before filtering the number of rows concerned.
 
 ```{python}
 # Printing all rows containing at least one NA
@@ -374,7 +376,7 @@ print(df[df.isna().any(axis=1)])
 df = df.dropna()
 ```
 
-3.  For convenience, we want to update the modalities of the `prop_type` variable : `1` means it's a house and `2` it's a flat. You can check pandas's Categorical function on [their documentation](https://pandas.pydata.org/docs/reference/api/pandas.Categorical.html#pandas.Categorical).
+3.  For convenience, **update the modalities of the `prop_type` variable : `1` means it's a house and `2` it's a flat**. You can check pandas's Categorical function on [their documentation](https://pandas.pydata.org/docs/reference/api/pandas.Categorical.html#pandas.Categorical).
 
 ```{python}
 #| code-fold: true
@@ -389,7 +391,7 @@ df["prop_type"] = pd.Categorical(
 ```
 
 
-4.  The codification of categorical variable can be computational intensive. `prop_type` has only two modalities but check the number of modalities of `prop_year_harm`. To speed-up the computation, can we regroup modalities together ?  Does it make sense given how the variable has been transformed (see the [presentation of the data](introduction.qmd)) ? How can we do it ?
+4.  The codification of categorical variable can be computational intensive. `prop_type` has only two modalities but **check the number of modalities of `prop_year_harm`**. To speed-up the computation, **can we regroup some modalities together ?**  Does it make sense given how the variable has been transformed (see the [presentation of the data](introduction.qmd)) ? How can we do it ?
 
 ```{python}
 #| code-fold: true
@@ -411,7 +413,7 @@ df['prop_year_harm_10'] = df['prop_year_harm_10'].where(df['prop_year_harm_10'] 
 df = df.drop(columns=["prop_year_harm"])
 ```
 
-5.  Split the dataframe in train and test set.
+5.  X is the dataframe with feature (without the target) and y is the target. **Create X and y from df. Split X and y in train and test sets with a test size of 20% of the data**.
 
     ::: {.callout-tip collapse="true" title="Hint"}
 
@@ -438,7 +440,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 ```
 
-Now that you are familiar with the main mechanisms of pre-processing for model training, we will move on to using scikit-learn modules to prepare for training.
+Now that you are familiar with the main mechanisms of pre-processing for model training, let's **move on to using scikit-learn modules to prepare for training**.
 
 Scikit-learn has a very well crafted documentation, so please do not hesitate to go and have a look on [their website](https://scikit-learn.org/stable/api/index.html).
 
@@ -464,9 +466,11 @@ y_test  = pd.read_parquet("https://minio.lab.sspcloud.fr/projet-funathon/2026/pr
 
 ## Exercice 3: The scikit-learn pipeline
 
-You are going to made your first scikit-learn pipeline. To begin, you can go to the [scikit-learn quickstart page](https://scikit-learn.org/stable/getting_started.html) for an overview.
+You are going to build your first scikit-learn pipeline. To begin, you can go to the [scikit-learn quickstart page](https://scikit-learn.org/stable/getting_started.html) for an overview.
 
-### Step 1 : the Pipeline object {#sec-scikit-learn-pipeline}
+### Introduction 
+
+#### Step 1 : the Pipeline object {#sec-scikit-learn-pipeline}
 
 You need to create a **pipeline**, *ie.* an single object to chain multiple processing steps. First, you put your pre-processing step - all transformation you need for the data preparation - and the model you have chosen at the end. Instead of applying each step manually one after the other, the pipeline does it automatically in the right order, both during training and prediction.
 
@@ -501,7 +505,7 @@ rf_pipeline = Pipeline([
 ])
 ```
 
-### Step 2 : the ColumnTransformer object
+#### Step 2 : the ColumnTransformer object
 
 When you create a pipeline, the first step is to prepare your data. The object `ColumnTransformer` can perform that : it allows you to apply different transformations to different columns of your dataset. It takes a list of `(name, transformer, columns)` tuples as input and outputs a single array with all transformed columns concatenated together.
 
@@ -538,24 +542,27 @@ pipeline = Pipeline([
 
 We will now create our first pipeline to transform the data for the training phase. We will first use a Random Forest model and then compare with a gradient boosting model.
 
-1.  Create the `ColumnTransformer` instance for the preprocessing step. Go and check [scikit-learn's documentation](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html).
+1.  Using the function `date_to_days` **create a `FunctionTransformer` called `date_transformer` that will apply the date_to_days function with January, 1st 2010 as argument.**
+
+2. **Create then a `ColumnTransformer` for the preprocessing step that applies `OneHotEncoder` to categorical features and our `date_transformer` to time feature**. The other features should be kept with the `passthrough` option 
+
+Go and check [scikit-learn's documentation](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html).
 
     ::: {.callout-tip collapse="true" title="Hint"}
 
     For the preprocessing step, you have to :
 
-    -   transform the `trans_date` variable, a `Timestamp` feature to a elapsed feature (`ref_date = '2010-01-01 00:00'`). You can create a new function `date_to_days`, and apply it with [scikit-learn's `FunctionTransformer`](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html). Note that the output of your `date_to_days` function should be a Python array and that `.to_numpy().reshape(-1, 1)` applied to a Pandas Series will transform it to the correct type ;
+    -  applyt the new function `date_to_days` with [scikit-learn's `FunctionTransformer`](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.FunctionTransformer.html) ;
     -   apply the chosen encoding method (OneHotEncoder) on categorical features.
 
     :::
 
-```{python}
-#| code-fold: true
-#| code-summary: See the solution
-#| code-overflow: scroll
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder, FunctionTransformer
+Here is the code for the new function `date_to_days` that will transform the `trans_date` variable, a `Timestamp`, to an elapsed feature (`ref_date = '2010-01-01 00:00'`). 
+Note that the output of your `date_to_days` function is a Python array and that `.to_numpy().reshape(-1, 1)` applied to a Pandas Series will transform it to the correct type.
 
+```{python}
+#| code-fold: false
+#| code-overflow: scroll
 
 def date_to_days(X: pd.Series, ref_date: pd.Timestamp):
     # converts a date to a difference to ref_date :
@@ -566,6 +573,15 @@ def date_to_days(X: pd.Series, ref_date: pd.Timestamp):
     diff_dt = diff_dt.to_numpy().reshape(-1, 1)
 
     return diff_dt
+
+```
+
+```{python}
+#| code-fold: true
+#| code-summary: See the solution
+#| code-overflow: scroll
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, FunctionTransformer
 
 date_transformer = FunctionTransformer(
     date_to_days,
@@ -581,7 +597,7 @@ preprocessor = ColumnTransformer(
 )
 ```
 
-2.  Create the Pipeline for training a RandomForestRegressor model. Go to the [scikit-learn's documentation](https://scikit-learn.org/stable/modules/compose.html#pipelines-and-composite-estimators) on the matter to understand how it works.
+2.  **Create the Pipeline for training a RandomForestRegressor model.** Go to the [scikit-learn's documentation](https://scikit-learn.org/stable/modules/compose.html#pipelines-and-composite-estimators) on the matter to understand how it works.
 
     ::: {.callout-tip collapse="true" title="Hint"}
 
