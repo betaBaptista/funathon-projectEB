@@ -207,9 +207,9 @@ You can use `matplotlib` to make the plots, and the `percentile` function of `nu
 
     If you want to focus your study on tails phenomena, the way you deal with this issue will be very important because you want to disentangle the richness of the extreme data from bad data. If you're more focused on predicting the median price, the risk associated with cleaning too abruptly extreme phenomena is smaller.
 
-    In our case, one of the flaw of the data is for example partial selling (when somebody sells only a fraction of the property - leading to price per square meter too low) and error mistakes in the data (if the property for example has been renovated and extended and the reported floor area hasn't been updated - leading to a too high price per square meter). No expert knowledge can give a threshold above which a price is for sure too high.
+    In our case, one of the problems of the data is partial transactions (when somebody sells only a fraction of the property - leading to price per square meter that are way too low) and clear mistakes in the data (prices can sometimes be in cents instead of euros - leading to prices per square meter that are 100 times too high). No expert knowledge can give a threshold above which a price is for sure too low or too high.
 
-    We will therefore apply first a deterministic method. For example, we can set a threshold when analyzing housing price distribution (see previous plots and the describe methode). If the price per square meter of the transaction exceeds €200.000 for example, the value can be considered erroneous.
+    We will therefore apply first a simple deterministic method. For example, we can set a threshold when analyzing housing price distribution (see previous plots and the describe methode). If the price per square meter of the transaction exceeds €200.000 for example, the value can be considered erroneous.
 
     In the same way, we can have a look at the lower dristribution to see if there is an issue with the left part of the distribution.
 
