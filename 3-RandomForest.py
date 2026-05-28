@@ -63,15 +63,3 @@ rf_model_final = grid_search.best_estimator_
 print(type(rf_model_final))
 
 rf_model_final.fit(X_train, y_train)
-#%%
-#Part 1 : Calculate the evaluation metrics
-from joblib import load
-import requests
-import io
-
-# RF
-url = "https://minio.lab.sspcloud.fr/projet-funathon/2026/project1/models/rf_model_final.joblib"
-rf_model_final = load(io.BytesIO(requests.get(url).content))
-y_pred_test = rf_model_final.predict(X_test)
-y_pred_test
-# %%
