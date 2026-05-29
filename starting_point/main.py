@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestRegressor, HistGradientBoostingRegresso
 from preprocess import complete_pre_processing
 from log_mlflow import log_to_mlflow
 from pipeline import set_pipeline
-from utils import setup_logging, set_seed, check_data, store_datasets, store_model_mlflow_s3
+from utils import setup_logging, set_seed
 
 logger = setup_logging()
 # %%
@@ -12,7 +12,7 @@ logger.info("Importing data")
 
 df = complete_pre_processing()
 
-logger.info(f'df : {check_data(df)["msg"]}')
+#logger.info(f'df : {check_data(df)["msg"]}')
 
 # %%
 logger.info("Pipeline")
@@ -27,8 +27,8 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=set_seed()
 )
 
-logger.info(f'X_train : {check_data(X_train)["msg"]}')
-logger.info(f'X_test : {check_data(X_test)["msg"]}')
+#logger.info(f'X_train : {check_data(X_train)["msg"]}')
+#logger.info(f'X_test : {check_data(X_test)["msg"]}')
 
 # %%
 # Fitting GB model
@@ -59,7 +59,7 @@ gb_model_final.fit(X_train, y_train)
 # %%
 # Saving GB model to MLFlow
 logger.info("Storing GB model to MLFlow")
-exp_name = "Funathon - project 1"
+exp_name = "Funathon - project 1 Final"
 
 log_to_mlflow(
     exp_name=exp_name,
@@ -69,10 +69,8 @@ log_to_mlflow(
     X_train=X_train,
     X_test=X_test,
     y_train=y_train,
-    y_test=y_test,
-    logger=logger
+    y_test=y_test
 )
-
 # %%
 logger.info("Setting training data sets")
 X = df.drop(columns=["price_sqm"])
@@ -112,12 +110,7 @@ log_to_mlflow(
     X_train=X_train,
     X_test=X_test,
     y_train=y_train,
-    y_test=y_test,
-    logger=logger
+    y_test=y_test
 )
 
-# %%
-# Saving RF model to S3
-logger.info("Storing latest RF model from MLFLow to S3")
-store_model_mlflow_s3("models:/RF@latest", "rf_model_final.joblib")
 # %%
