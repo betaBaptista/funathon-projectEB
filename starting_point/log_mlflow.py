@@ -1,3 +1,4 @@
+#%%
 import mlflow
 import mlflow.sklearn
 import os
@@ -74,3 +75,5 @@ def log_to_mlflow(exp_name, model, model_name, model_params, X_train, X_test, y_
             ),
             "importance.png"
         )
+
+# %%

@@ -14,7 +14,6 @@ df = complete_pre_processing()
 
 logger.info(f'df : {check_data(df)["msg"]}')
 
-
 # %%
 logger.info("Pipeline")
 
