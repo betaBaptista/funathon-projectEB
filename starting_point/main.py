@@ -112,5 +112,4 @@ log_to_mlflow(
     y_train=y_train,
     y_test=y_test
 )
-
 # %%
