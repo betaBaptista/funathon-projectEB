@@ -30,7 +30,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 logger.info(f'X_train : {check_data(X_train)["msg"]}')
 logger.info(f'X_test : {check_data(X_test)["msg"]}')
 # %%
-
 datasets_to_store = {"X_train": X_train, "X_test": X_test, "y_train": y_train.to_frame(), "y_test": y_test.to_frame(), "df": df}
 store_datasets(datasets_to_store=datasets_to_store)
 logger.info(f'Storing datasets to S3 : {datasets_to_store.keys()}')
